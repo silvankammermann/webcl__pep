@@ -2,7 +2,7 @@
 <html>
 <head>
   <script src="./../mqtt/mqtt.min.js" type="text/javascript"></script>
-  <script src="pepLocalStarter.js" type="module"></script>
+  <script src="pepMqttStarter.js" type="module"></script>
   <title>Personal Einsatz Planung</title>
   <style>
           body {
@@ -143,26 +143,12 @@
   window.grailsServerPort = "8080";
   window.restPath         = '/developers';
   window.appRootId        = 'topicsOverWeeks';
-  window.mqttBroker       = "localhost";    // use "broker.hivemq.com" for public broker
-  window.mqttPort         = 8083;           // use 8000 for public broker
-  window.mqttClientId     = "pep-" + Math.random().toString(16);
   // keep page specifics in the page
 </script>
 
 
-<script type="module">
-    import { pepServices } from "./service/mqttService.js";
-    import { start }       from "./pep.js";
 
-    const appRootId = window.appRootId;
-
-    const service = pepServices();
-
-    service.loadDevelopers( devs =>
-        service.loadProjects( projects =>
-            start(appRootId, devs, projects)
-    ));
-</script>
+<!--<script src="pepLocalStarter.js" type="module"></script>-->
 
 </body>
 </html>
