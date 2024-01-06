@@ -19,7 +19,7 @@ const initialData = {
  * Concrete factory for local {@link PepService} functions.
  * @returns {PepService}
  */
-const pepServices = (broker, port, topic, imgPath) => {
+const pepServices = (broker, port, topic) => {
 
     const mqttClient = client(broker, port);
 
@@ -28,7 +28,7 @@ const pepServices = (broker, port, topic, imgPath) => {
         projects: []
     }
 
-    const init = new Promise(resolve => {
+    const loadInitialData = new Promise(resolve => {
         mqttClient.then(({subscribe, publish}) => {
             subscribe(topic, (msg) => {
                 const payload = JSON.parse(msg.payloadString);
@@ -43,12 +43,12 @@ const pepServices = (broker, port, topic, imgPath) => {
         });
     });
 
-    const loadDevelopers = callback => {
-        init.then(() => callback(data.developers));
+    const loadDevelopers = withDeveloper => {
+        loadInitialData.then(() => withDeveloper(data.developers));
     };
 
-    const loadProjects = callback => {
-        init.then(() => callback(data.projects));
+    const loadProjects = withProject => {
+        loadInitialData.then(() => withProject(data.projects));
     };
 
     return { loadDevelopers, loadProjects };
